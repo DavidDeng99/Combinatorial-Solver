@@ -15,41 +15,46 @@ def createStrings(word, k):
     
     return strings
 
-# user input, initialise variables
-word = input("Enter the word: ")
-n = len(word)
-k = int(input("Enter the number of letters: "))
+def solve(word, k):
+    # Create the strings resurively
+    stringsList = createStrings(word, k)
 
-while (k <= 0 or k > n):
-    if k <= 0:
-        print("The number must be positive.")
-    elif k > n:
-        print("You cannot use more letters than in the word")
-    k = input("Enter the number of letters: ")
+    strings = []
 
+    # Join the characters to form a list
+    for list in stringsList:
+        strings.append("".join(list))
 
-# Create the strings resurively
-stringsList = createStrings(word, k)
+    # Only get unique words
+    wordsSet = set()
+    for answer in strings:
+        wordsSet.add(answer)
 
-strings = list()
+    # Only get valid words
+    toRemove = set()
+    for answer in wordsSet:
+        if not Counter(word) >= Counter(answer):
+            toRemove.add(answer)
 
-# Join the characters to form a list
-for list in stringsList:
-    strings.append("".join(list))
+    for answer in toRemove:
+        wordsSet.remove(answer)
+    
+    return len(wordsSet)
 
-# Only get unique words
-wordsSet = set()
-for answer in strings:
-    wordsSet.add(answer)
+if __name__ == "__main__":  
+    # user input, initialise variables
+    word = input("Enter the word: ")
+    n = len(word)
+    k = int(input("Enter the number of letters: "))
 
-# Only get valid words
-toRemove = set()
-for answer in wordsSet:
-    if not Counter(word) >= Counter(answer):
-        toRemove.add(answer)
+    while (k <= 0 or k > n):
+        if k <= 0:
+            print("The number must be positive.")
+        elif k > n:
+            print("You cannot use more letters than in the word")
+        k = input("Enter the number of letters: ")
 
-for answer in toRemove:
-    wordsSet.remove(answer)
+    combinations = solve(word, k)
 
-# Print the number of possible combinations
-print(str(len(wordsSet)) + " possible combinations.")
+    # Print the number of possible combinations
+    print(str(combinations) + " possible combinations.")
