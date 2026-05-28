@@ -1,14 +1,14 @@
 from collections import Counter
 
 # Create a list of lists of characters. Each list of characters corresponds to a string
-def createStrings(word, k):
+def createStrings(chars, k):
     if (k == 1):
-        return [[char] for char in word]
+        return [[char] for char in chars]
     
     strings = []
-    substrings = createStrings(word, k - 1)
+    substrings = createStrings(chars, k - 1)
 
-    for char in word:
+    for char in chars:
         for string in substrings:
             newString = string + [char]
             strings.append(newString)
@@ -17,7 +17,15 @@ def createStrings(word, k):
 
 def solve(word, k):
     # Create the strings resurively
-    stringsList = createStrings(word, k)
+    charsList = []
+    for letter in word:
+        if letter not in charsList:
+            charsList.append(letter)
+
+    chars = ""
+    for letter in charsList:
+        chars = chars + letter
+    stringsList = createStrings(chars, k)
 
     strings = []
 
